@@ -15,6 +15,7 @@
         <select id="language">
             <option value="german">German</option>
             <option value="french">French</option>
+            <option value="hindi">Hindi</option>
         </select>
     </div>
 
@@ -44,8 +45,8 @@
 
     <script>
         $('#translation_wrapper').hide();
-        // const BASE_URL = 'http://127.0.0.1:8000';
-        const BASE_URL = 'https://scraper-tool.osc-fr1.scalingo.io';
+        const BASE_URL = 'http://127.0.0.1:8000';
+        // const BASE_URL = 'https://scraper-tool.osc-fr1.scalingo.io';
         let mediaRecorder;
         let audioChunks = [];
         let isRecording = false;
@@ -60,8 +61,8 @@
 				data: JSON.stringify({ language: language }),
 				success: function(data) {
                     console.log(data)
-					$('#sentence').text(data.original);
-                    $('#translation').text(data.translated);
+					$('#sentence').text(data.translated);
+                    $('#translation').text(data.original);
 				},
 				error: function(err) {
 					alert('Error: ' + err.responseJSON.error);

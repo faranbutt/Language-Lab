@@ -147,20 +147,94 @@ def create_app():
         print("used random sentence")
         language = request.json.get('language')
         print("used random sentence:", language)
-        sentences = {
-            "german":[
-                {"original":"Das ist ein Test", "translated":"This is a test"},
-                {"original":"Die Katze sitzt auf dem Tisch", "translated":"The cat is sitting on the table"},
-            ],
-            "french":[
-                {"original":"Ceci est un test", "translated":"This is a test"},
-                {"original":"La chatte se tient sur la table", "translated":"The cat is sitting on the table"},
-            ]
-        }
 
-        choice = random.choice(sentences[language])
+        sentences = [
+            {
+                "original":"Hello, how are you?",
+                "translated":{
+                    "german":"Hallo, wie geht's dir?",
+                    "french":"Bonjour, comment ça va?",
+                    "hindi":"नमस्ते, आप कैसे हैं?"
+                }
+            },
+            {
+                "original":"I love reading books.",
+                "translated":{
+                    "german":"Ich liebe es, Bücher zu lesen.",
+                    "french":"J'aime lire des livres.",
+                    "hindi":"मुझे किताबें पढ़ना पसंद है।"
+                }
+            },
+            {
+                "original":"The sky is blue.",
+                "translated":{
+                    "german":"Der Himmel ist blau.",
+                    "french":"Le ciel est bleu.",
+                    "hindi":"आसमान नीला है।"
+                }
+            },
+            {
+                "original":"What is your name?",
+                "translated":{
+                    "german":"Wie heißt du?",
+                    "french":"Comment vous appelez-vous?",
+                    "hindi":"आपका नाम क्या है?"
+                }
+            },
+            {
+                "original":"The cat is sleeping.",
+                "translated":{
+                    "german":"Die Katze schläft.",
+                    "french":"Le chat dort.",
+                    "hindi":"बिल्ली सो रही है।"
+                }
+            },
+            {
+                "original":"Dinner is ready.",
+                "translated":{
+                    "german":"Das Abendessen ist fertig.",
+                    "french":"Le dîner est prêt.",
+                    "hindi":"खाना तैयार है।"
+                }
+            },
+            {
+                "original":"I am learning a new language.",
+                "translated":{
+                    "german":"Ich lerne eine neue Sprache.",
+                    "french":"J'apprends une nouvelle langue.",
+                    "hindi":"मैं एक नई भाषा सीख रहा हूँ।"
+                }
+            },
+            {
+                "original":"Can you help me?",
+                "translated":{
+                    "german":"Kannst du mir helfen?",
+                    "french":"Pouvez-vous m'aider?",
+                    "hindi":"क्या आप मेरी मदद कर सकते हैं?"
+                }
+            },
+            {
+                "original":"She sings beautifully.",
+                "translated":{
+                    "german":"Sie singt wunderschön.",
+                    "french":"Elle chante magnifiquement.",
+                    "hindi":"वह सुंदरता से गाती है।"
+                }
+            },
+            {
+                "original":"It's raining outside.",
+                "translated":{
+                    "german":"Es regnet draußen.",
+                    "french":"Il pleut dehors.",
+                    "hindi":"बाहर बारिश हो रही है।"
+                }
+            }
+        ]
 
-        return jsonify({'original': choice['original'], 'translated': choice['translated']})
+
+        choice = random.choice(sentences)
+
+        return jsonify({'original': choice['original'], 'translated': choice['translated'][language]})
 
 
 
