@@ -41,6 +41,7 @@
 
         function getRandomSentence() {
             let language = $('#language').val();
+            $('#translation_wrapper').hide();
 			$.ajax({
 				url: BASE_URL + '/randomsentence',
 				method: 'POST',
