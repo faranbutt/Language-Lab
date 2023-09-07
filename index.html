@@ -19,7 +19,7 @@
     </div>
 
 	<button onclick="getRandomSentence()">Get random sentence</button><br>
-	<div id="sentence">placeholder sentence</div><br><br><br>
+	<div id="sentence"></div><br><br><br>
 
     <button onclick="toggleRecording()">Toggle mic</button><br>
     Status: <span id="recordingStatus">Not Recording</span>
@@ -30,6 +30,17 @@
     <button onclick="playTranslation()">Hear Correct Translation</button>
     <div id="translation_wrapper">Correct translation: <span id="translation"></span></div>
     <audio id="translatedAudio"></audio>
+
+    <div id="tutorial">
+        <h2>How to use the app</h2>
+        <ol>
+            <li>Select a language</li>
+            <li>Click "Get random sentence" to get a random sentence in the selected language</li>
+            <li>Translate the sentence yourself then say it out loud in english using your microphone and the Toggle mic button</li>
+            <li>Click "Hear correct translation" to see and hear the correct translation</li>
+            <li>Click "Get random sentence" to start again</li>
+        </ol>
+    </div>
 
     <script>
         $('#translation_wrapper').hide();
