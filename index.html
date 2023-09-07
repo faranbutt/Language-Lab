@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Learning Helper</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+    <div>
+        <label for="language">Source Language:</label>
+        <select id="language">
+            <option value="german">German</option>
+            <option value="french">French</option>
+        </select>
+    </div>
+
+	<button onclick="getRandomSentence()">Get random sentence</button><br>
+	<div id="sentence">placeholder sentence</div><br><br><br>
+
+    <button onclick="toggleRecording()">Toggle mic</button><br>
+    Status: <span id="recordingStatus">Not Recording</span>
+
+	<div>What the AI understood:</div>
+    <div id="speechtotext_response"></div><br><br><br>
+
+    <button onclick="playTranslation()">Hear Correct Translation</button>
+    <audio id="translatedAudio"></audio>
+
+    <script>
+        const BASE_URL = 'http://127.0.0.1:8000';
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        function getRandomSentence() {
+            let language = $('#language').val();
+			$.ajax({
+				url: BASE_URL + '/randomsentence',
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({ language: language }),
+				success: function(data) {
+					$('#sentence').text(data.original);
+				},
+				error: function(err) {
+					alert('Error: ' + err.responseJSON.error);
+				}
+			});
+        }
+
+        async function toggleRecording() {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                await startRecording();
+            }
+        }
+
+        async function startRecording() {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    let base64data = reader.result.split(',')[1];
+					$.ajax({
+						url: BASE_URL + '/speechtotext',
+						method: 'POST',
+						contentType: 'application/json',
+						data: JSON.stringify({ audio: base64data }),
+						success: function(data) {
+							$('#speechtotext_response').text(data.text);
+                            if(data.text.length < 1) {
+                                alert('The speechtotext returned an empty text');
+                            }
+						},
+						error: function(err) {
+							alert('Error: ' + err.responseJSON.error);
+						}
+					})
+                }
+                reader.readAsDataURL(audioBlob);
+            };
+
+            mediaRecorder.start();
+            $('#recordingStatus').text('Recording...');
+            isRecording = true;
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+            $('#recordingStatus').text('Not Recording');
+            isRecording = false;
+        }
+
+        function playTranslation() {
+            let text = $('#sentence').text();
+			$.ajax({
+				url: BASE_URL + '/texttospeech',
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({ text: text }),
+				success: function(data) {
+                    console.log("received data");
+                    console.log(data.audio);
+					$('#translatedAudio').attr('src', data.audio);
+                    //play the audio
+                    $('#translatedAudio')[0].play();
+				},
+				error: function(err) {
+					alert('Error: ' + err.responseJSON.error);
+				}
+			})
+        }
+    </script>
+
+</body>
+
+</html>
