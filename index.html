@@ -28,10 +28,13 @@
     <div id="speechtotext_response"></div><br><br><br>
 
     <button onclick="playTranslation()">Hear Correct Translation</button>
+    <div id="translation_wrapper">Correct translation: <span id="translation"></span></div>
     <audio id="translatedAudio"></audio>
 
     <script>
-        const BASE_URL = 'http://127.0.0.1:8000';
+        $('#translation_wrapper').hide();
+        // const BASE_URL = 'http://127.0.0.1:8000';
+        const BASE_URL = 'https://scraper-tool.osc-fr1.scalingo.io';
         let mediaRecorder;
         let audioChunks = [];
         let isRecording = false;
@@ -44,7 +47,9 @@
 				contentType: 'application/json',
 				data: JSON.stringify({ language: language }),
 				success: function(data) {
+                    console.log(data)
 					$('#sentence').text(data.original);
+                    $('#translation').text(data.translated);
 				},
 				error: function(err) {
 					alert('Error: ' + err.responseJSON.error);
@@ -104,18 +109,22 @@
         }
 
         function playTranslation() {
-            let text = $('#sentence').text();
+            let text = $('#translation').text();
+            if(text == ""){
+                alert('Get a random sentence first');
+                return;
+            }
 			$.ajax({
 				url: BASE_URL + '/texttospeech',
 				method: 'POST',
 				contentType: 'application/json',
 				data: JSON.stringify({ text: text }),
 				success: function(data) {
-                    console.log("received data");
-                    console.log(data.audio);
+                    console.log("received audio");
 					$('#translatedAudio').attr('src', data.audio);
                     //play the audio
                     $('#translatedAudio')[0].play();
+                    $('#translation_wrapper').show();
 				},
 				error: function(err) {
 					alert('Error: ' + err.responseJSON.error);
