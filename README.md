@@ -41,7 +41,7 @@ https://scraper-tool.osc-fr1.scalingo.io
 View the Demo [App](https://storage.googleapis.com/lablab-video-submissions/clm0rplfh0000356qz1lvzwq9/raw/submission-video-x-clm0rplfh0000356qz1lvzwq9-clm63u4qa0028356r5rduvcn3_h3qs417c7.mp4)
 
 ## Cover
-![y1](https://github.com/faranbutt/AudioCraft/blob/main/cover.png)
+![y1](https://github.com/faranbutt/Language-Lab/blob/main/cover.png)
 
 ## Technology Stack
 
@@ -65,7 +65,7 @@ View the Demo [App](https://storage.googleapis.com/lablab-video-submissions/clm0
 
 ## Screenshots
 
-![y2](https://github.com/faranbutt/Web-Parser/blob/main/webpage.png)
+![y2](https://github.com/faranbutt/Language-Lab/blob/main/webpage.png)
 
 
 ## How to use the app
